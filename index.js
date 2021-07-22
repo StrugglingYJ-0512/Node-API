@@ -1,33 +1,24 @@
-const http = require('http');
+const express = require('express')
+const app = express()
+const morgan = require('morgan') // 3rdParty middleWare 모듈 
 
-const hostname = '127.0.0.1';
-const port = 3001;
+// 미들웨어 생성시에는 인자가 3개.
+function logger(req, res, next) {
+  console.log('i am logger')
+  next();
+}
 
-const server = http.createServer((req, res) => {
+function logger2(req, res, next) {
+  console.log('i am logger2')
+  next()
+}
 
-  // 사용자의 요청한 정보의 경로명에 맞게 분기한다. 
-  // req : 사용자의 요청 정보 
-  console.log(req.url);
+// 미들웨어 추가시 use()쓴다. 
+// 추가할 미들웨어를 (괄호) 안에 쓴다. 
+app.use(logger)
+app.use(logger2);
+app.use(morgan('dev'))
 
-  if (req.url === '/') {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('Hello World\n'); // end 함수로 client에게 hello world 보내줌.
-  } else if (req.url === '/users') {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('User list\n'); // end 함수로 client에게 hello world 보내줌.
-
-  }
-  else {
-    res.statusCode = 404;
-    res.end('Not Found')
-  }
-
-
-});
-
-// listen함수 : 서버를 요청 대기상태로 만들어줌. (서버를 종료시키지 않고 계속 대기중.)
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
+app.listen(3000, () => {
+  console.log('Server is running')
+})

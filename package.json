@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/StrugglingYJ-0512/Node-API/issues"
   },
-  "homepage": "https://github.com/StrugglingYJ-0512/Node-API#readme"
+  "homepage": "https://github.com/StrugglingYJ-0512/Node-API#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "morgan": "^1.10.0"
+  }
 }
