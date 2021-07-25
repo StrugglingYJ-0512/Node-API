@@ -15,6 +15,27 @@ describe('GET /users는', () => {
           done()
         })
     })
+
+    it('최대 limit 갯수만큼 응답한다.', (done) => {
+      request(app)
+        .get('/users?limit=2') // user리스트를 2개만 받겠다! 라는 의미
+        .end((err, res) => {
+
+          res.body.should.have.lengthOf(2)
+          done()
+        })
+    })
   })
 
+  describe('실패시', () => {
+    it('limit이 숫자 형이 아니면 400을 응답하낟. ', (done) => {
+      request(app)
+        .get('/users?limit=two')
+        .expect(400)
+        .end(done())
+    })
+  })
 })
+
+
+

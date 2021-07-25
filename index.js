@@ -13,7 +13,19 @@ const users = [
 app.use(morgan('dev'))
 
 app.get('/users', (req, res) => {
-  res.json(users)
+  // const limit = req.query.limit; // "2"로 문자열임. 따라서, 정수형으로 바꿔주야한다. 
+  req.query.limit = req.query.limit || 10;
+  //  req.query.limit || 10   --- 의미
+  // : req.query.limit 의 숫자가 있으면 그대로 쓰꼬,
+  // 없으면, 10을 기본값으로 준다. 
+  const limit = parseInt(req.query.limit, 10) // (수로 바꿀 문자열, 10진법)
+  if (Number.isNaN(limit)) {
+    // limit이 NaN이면 정수가 아니라는 뜻!
+    return res.status(400).end()
+    // 지금까지는 status(200)을 쓰지 않았는데,이유는 기본이 200으로 되어있어서.
+    // 마지막에 end 함수 : 돌려준다!
+  }
+  res.json(users.slice(0, limit))
 })
 
 app.listen(port, () => {
